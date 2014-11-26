@@ -1,0 +1,38 @@
+<!doctype html>
+
+<html lang="es-ar">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,initial-scal=1">
+    <meta name="description" content="">
+    <meta name="author" content="Augusto Roccasalva">
+
+    <link rel="stylesheet" href="{{ static('dist/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ static('dist/css/bootstrap-theme.min.css') }}">
+    <link rel="stylesheet" href="{{ static('css/roboto-draft.css') }}">
+    <link rel="stylesheet" href="{{ static('css/mini-hr.css') }}">
+    <!-- page-specific css style -->
+    {%- block css %}{% endblock %}
+
+    <title>{% block title %}Application title{% endblock %}</title>
+
+  </head>
+
+  <body>
+
+    {% block navbar %}{% endblock %}
+
+    {% block content %}{% endblock %}
+
+    {% block footer %}{% endblock %}
+
+    <!-- jQUery -->
+    <script src="{{ static('js/jquery.min.js') }}"></script>
+    <!-- Bootstrap JavaScript -->
+    <script src="{{ static('dist/js/bootstrap.min.js') }}"></script>
+    <!-- page-specific JavaScript block -->
+    {%- block js %}{% endblock %}
+
+  </body>
+</html>
