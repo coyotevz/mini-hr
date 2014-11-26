@@ -14,9 +14,6 @@ class TimestampMixin(object):
                          onupdate=datetime.now)
 
 
-ea_join = "Employee.user_code==AttendanceRecord.user_code"
-
-
 class AttendanceRecord(db.Model):
     __tablename__ = 'attendance_record'
 
@@ -38,9 +35,11 @@ class Employee(db.Model, TimestampMixin):
     cuil = db.Column(db.Unicode(11), nullable=False)
     user_code = db.Column(db.Integer)
 
-    records = db.relationship(AttendanceRecord,
-                              primaryjoin=ea_join,
-                              backref='employee', lazy='joined')
+    records = db.relationship(
+        AttendanceRecord,
+        primaryjoin=user_code == db.foreign(AttendanceRecord.user_code),
+        backref='employee', lazy='dynamic'
+    )
 
 
 class Address(db.Model, TimestampMixin):
