@@ -54,10 +54,10 @@ class Employee(db.Model, TimestampMixin):
     @property
     def age(self):
         today = date.today()
-        return relativedelta(today, self.birth_date).years
+        return relativedelta(today, self.birth_date)
 
     @property
-    def hired_time(self):
+    def seniority(self):
         today = date.today()
         return relativedelta(today, self.hire_date)
 
@@ -67,7 +67,7 @@ class Employee(db.Model, TimestampMixin):
                 .filter(db.extract('month', AttendanceRecord.datetime)==month)
 
     def __repr__(self):
-        return "<Employee '{}', age {}>".format(self.name, self.age)
+        return "<Employee '{}', age {}>".format(self.name, self.age.years)
 
 
 class Address(db.Model, TimestampMixin):
