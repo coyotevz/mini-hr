@@ -1,72 +1,41 @@
 {% extends "layout.html" %}
 
+{% macro render_field(field) %}
+<div class="form-group">
+  {{ field.label(class="col-sm-3 control-label") }}
+  <div class="col-sm-9">
+    {{ field(class="form-control") }}
+    {% if field.description %}
+    <p class="help-block">{{ field.description }}</p>
+    {% endif %}
+  </div>
+</div>
+{% endmacro %}
+
 {% block page_content %}
 <div class="row">
   <div class="col-md-6">
-    <div class="panel panel-info">
+    <div class="panel">
       <div class="panel-heading">
         <h3>Nuevo empleado</h3>
       </div>
       <div class="panel-body">
         <form role="form" class="form-horizontal">
           {{ form.hidden_tag() }}
-          <div class="form-group">
-            {{ form.first_name.label(class="col-sm-3 control-label") }}
-            <div class="col-sm-9">
-              {{ form.first_name(class="form-control") }}
-              <p class="help-block">{{ form.first_name.description }}</p>
-            </div>
-          </div>
-          <div class="form-group">
-            {{ form.last_name.label(class="col-sm-3 control-label") }}
-            <div class="col-sm-9">
-              {{ form.last_name(class="form-control") }}
-              <p class="help-block">{{ form.last_name.description }}</p>
-            </div>
-          </div>
+          {{ render_field(form.first_name) }}
+          {{ render_field(form.last_name) }}
+          {{ render_field(form.birth_date) }}
+          {{ render_field(form.cuil) }}
+          {{ render_field(form.hire_date) }}
+          {{ render_field(form.user_code) }}
+          {{ render_field(form.file_no) }}
+          <button type="submit" class="btn btn-primary">Guardar</button>
+          <button type="submit" class="btn btn-default">Cancelar</button>
         </form>
       </div>
     </div>
   </div>
 </div>
-
-
-<div class="page-header">
-  <h1>Nuevo empleado</h1>
-</div>
-<form role="form" method="post" action="">
-  {{ form.hidden_tag() }}
-  <div class="form-group">
-    {{ form.first_name.label }}
-    {{ form.first_name(size=20, class="form-control") }}
-  </div>
-  <div class="form-group">
-    {{ form.last_name.label }}
-    {{ form.last_name(size=20, class="form-control") }}
-  </div>
-  <div class="form-group">
-    {{ form.birth_date.label }}
-    {{ form.birth_date(class="form-control") }}
-  </div>
-  <div class="form-group">
-    {{ form.cuil.label }}
-    {{ form.cuil(class="form-control") }}
-  </div>
-  <div class="form-group">
-    {{ form.hire_date.label }}
-    {{ form.hire_date(class="form-control") }}
-  </div>
-  <div class="form-group">
-    {{ form.user_code.label }}
-    {{ form.user_code(class="form-control") }}
-  </div>
-  <div class="form-group">
-    {{ form.file_no.label }}
-    {{ form.file_no(class="form-control") }}
-  </div>
-  <button type="submit" class="btn btn-primary">Guardar</button>
-  <button type="submit" class="btn btn-default">Cancelar</button>
-</form>
 {% endblock %}
 
 {# vim: ft=jinja:sw=2
