@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from datetime import datetime
+from datetime import datetime, date
+from dateutil.relativedelta import relativedelta
 
 from flask.ext.sqlalchemy import SQLAlchemy
 
@@ -23,6 +24,10 @@ class AttendanceRecord(db.Model):
     bkp_type = db.Column(db.Integer, nullable=False)
     type_code = db.Column(db.Integer, nullable=False)
 
+    def __repr__(self):
+        return "<Record({}, {} {})>".format(self.user_code,
+            self.datetime.isoformat(' '), "OUT" if self.type_code else "IN")
+
 
 class Employee(db.Model, TimestampMixin):
     __tablename__ = 'employee'
@@ -34,12 +39,35 @@ class Employee(db.Model, TimestampMixin):
     hire_date = db.Column(db.Date, nullable=False)
     cuil = db.Column(db.Unicode(11), nullable=False)
     user_code = db.Column(db.Integer)
+    file_no = db.Column(db.Integer)
 
     records = db.relationship(
         AttendanceRecord,
         primaryjoin=user_code == db.foreign(AttendanceRecord.user_code),
         backref='employee', lazy='dynamic'
     )
+
+    @property
+    def name(self):
+        return ", ".join([self.first_name, self.last_name])
+
+    @property
+    def age(self):
+        today = date.today()
+        return relativedelta(today, self.birth_date).years
+
+    @property
+    def hired_time(self):
+        today = date.today()
+        return relativedelta(today, self.hire_date)
+
+    def month_records(self, year, month):
+        return self.records\
+                .filter(db.extract('year', AttendanceRecord.datetime)==year)\
+                .filter(db.extract('month', AttendanceRecord.datetime)==month)
+
+    def __repr__(self):
+        return "<Employee '{}', age {}>".format(self.name, self.age)
 
 
 class Address(db.Model, TimestampMixin):
