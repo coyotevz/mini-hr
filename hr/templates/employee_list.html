@@ -2,7 +2,7 @@
 
 {% block page_content %}
 <div class="page-header">
-  <h1>Nómina <a href="{{ url_for('employee_add') }}" class="btn btn-xs btn-default" type="button">Agregar</a></h1>
+  <h1>Nómina <a href="{{ url_for('employee_add') }}" class="btn btn-xs btn-default" type="button">Agregar Nuevo</a></h1>
 </div>
 <div class="row">
   <div class="col-md-12">
@@ -10,8 +10,8 @@
       <thead>
         <tr>
           <th>#</th>
-          <th>Nombre</th>
-          <th>Apellido</th>
+          <th>Apellido y Nombre</th>
+          <th>Fecha Nacimiento</th>
           <th>Fecha Ingreso</th>
           <th>Registros</th>
         </tr>
@@ -20,8 +20,8 @@
         {% for employee in employees %}
         <tr>
           <td>{{ employee.file_no|d('', True) }}</td>
-          <td>{{ employee.first_name }}</td>
-          <td>{{ employee.last_name }}</td>
+          <td>{{ employee.last_name + ', ' + employee.first_name }}</td>
+          <td>{{ employee.birth_date.isoformat() }}</td>
           <td>{{ employee.hire_date.isoformat() }}</td>
           <td>{{ employee.records.count() }}</td>
         </tr>
