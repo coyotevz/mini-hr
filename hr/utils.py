@@ -1,10 +1,9 @@
 from collections import namedtuple, OrderedDict
-from itertools import groupby
+from itertools import groupby, chain
 from datetime import datetime, time, date, timedelta
 from dateutil.relativedelta import relativedelta
 from dateutil.rrule import rrule, DAILY
 from dateutil.parser import parse
-
 
 
 Interval = namedtuple("Interval", "input output")
@@ -33,6 +32,7 @@ def perfect_grid(year, month):
 
 
 def time_diff(t1, t2):
+    "Return timedelta form 2 time() objects"
     t1_sec = (t1.hour*60+t1.minute)*60+t1.second
     t2_sec = (t2.hour*60+t2.minute)*60+t2.second
     return timedelta(seconds=t1_sec-t2_sec)
@@ -40,9 +40,26 @@ def time_diff(t1, t2):
 def _gdate(item):
     return item.datetime.date()
 
-RDiff = namedtuple("RDiff", "orig diffs")
+def min_diff_index(l, t):
+    "Return index of the minimum difference"
+    ci = 0
+    cd = None
+    for i, r in enumerate(l):
+        diff = abs(time_diff(r[0], t).total_seconds())
+        if cd is None or diff < cd:
+            ci = i
+            cd = diff
+    return ci
+
+def grouped(iterable, n=2):
+    "Return n elements at time from iterable"
+    return zip(*[iter(iterable)]*n)
 
 def fixed_records(query, year, month):
+    "Return a list with fixed records from query.
+
+    return list of (day, [Interval(), Interval(), ...])
+    """
     grid = perfect_grid(year, month)
 
     records = dict((day, [r.datetime.time() for r in record])\
@@ -51,9 +68,13 @@ def fixed_records(query, year, month):
     fixed = []
     for day, intervals in grid:
         day_records = records.get(day, [])
-        for i in intervals:
-            f = Interval(
-                RDiff(i[0], [(r, time_diff(r, i[0])) for r in day_records]),
-                RDiff(i[1], [(r, time_diff(r, i[1])) for r in day_records]),
-            )
-            print(f)
+        pairs = [[i, None] for i in chain(*intervals)]
+        while len(day_records):
+            rec = day_records.pop(0)
+            mini = min_diff_index(pairs, rec)
+            if pairs[mini][1] is not None:
+                day_records.append(pairs[mini][1])
+            pairs[mini][1] = rec
+        fixed.append((day, [Interval(*map(lambda x:x[1], p))\
+                            for p in grouped(pairs)]))
+    return fixed
