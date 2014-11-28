@@ -49,7 +49,7 @@ class Employee(db.Model, TimestampMixin):
 
     @property
     def name(self):
-        return ", ".join([self.first_name, self.last_name])
+        return ", ".join([self.last_name, self.first_name])
 
     @property
     def age(self):

@@ -25,13 +25,12 @@ def employee_add():
         db.session.add(e)
         db.session.commit()
         return redirect(url_for('employee_list'))
-    print("form:", form.data)
-    print("form:", form.errors)
     return render_template('employee_form.html', form=form)
 
-@app.route("/employee/<id>")
+@app.route("/employee/<int:id>")
 def employee_view(id):
-    pass
+    employee = Employee.query.get_or_404(id)
+    return render_template('employee_view.html', employee=employee)
 
 @app.route("/employee/<id>/edit")
 def employee_edit(id):
