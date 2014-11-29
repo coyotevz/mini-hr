@@ -56,7 +56,7 @@ def grouped(iterable, n=2):
     return zip(*[iter(iterable)]*n)
 
 def fixed_records(query, year, month):
-    "Return a list with fixed records from query.
+    """Return a list with fixed records from query.
 
     return list of (day, [Interval(), Interval(), ...])
     """
@@ -69,7 +69,10 @@ def fixed_records(query, year, month):
     for day, intervals in grid:
         day_records = records.get(day, [])
         pairs = [[i, None] for i in chain(*intervals)]
-        while len(day_records):
+        # FIXME: This can fall in an infinite loop
+        processed = 0
+        while len(day_records) and processed < len(pairs)*10:
+            processed += 1
             rec = day_records.pop(0)
             mini = min_diff_index(pairs, rec)
             if pairs[mini][1] is not None:
