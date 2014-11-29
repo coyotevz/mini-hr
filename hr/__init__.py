@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+import locale
+locale.setlocale(locale.LC_ALL, '')
 
 from flask import Flask, url_for
 from hr.models import db
