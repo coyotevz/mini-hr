@@ -25,10 +25,8 @@
         </tr>
       </thead>
       <tbody>
-        {% set year = 2014 %}
-        {% set month = 11 %}
         {% set lastday = None %}
-        {% for (day, intervals) in fixed_records(employee.month_records(year, month), year, month) %}
+        {% for (day, intervals) in records %}
         {% for interval in intervals %}
         <tr>
           {% if lastday != day %}
@@ -36,8 +34,15 @@
             {{ day.strftime('%A %d').title() }}
           </th>
           {% endif %}
-          <td{% if not interval.input %} class="danger"{% endif %}>{{ interval.input|d('Missing', true) }}</td>
-          <td{% if not interval.output %} class="danger"{% endif %}>{{ interval.output|d('Missing', true) }}</td>
+          <td{% if not interval.input %} class="danger"{% endif %}>
+            {{ interval.input|d('Missing') }}
+          </td>
+          <td{% if not interval.output %} class="danger"{% endif %}>
+            {{ interval.output|d('Missing') }}
+          </td>
+          <td{% if interval.late %} class="danger"{% endif %}>
+            {{ interval.late|d('OK', true) }}
+          </td>
         </tr>
         {% set lastday = day %}
         {% endfor %}

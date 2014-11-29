@@ -31,8 +31,10 @@ def employee_add():
 def employee_view(id):
     from hr.utils import fixed_records
     employee = Employee.query.get_or_404(id)
+    records = fixed_records(employee.month_records(2014, 11), 2014, 11)
     return render_template('employee_view.html',
-            employee=employee, fixed_records=fixed_records)
+                           employee=employee,
+                           records=records)
 
 @app.route("/employee/<id>/edit")
 def employee_edit(id):

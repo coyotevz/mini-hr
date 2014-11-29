@@ -7,6 +7,7 @@ from dateutil.parser import parse
 
 
 Interval = namedtuple("Interval", "input output")
+IntervalInfo = namedtuple("IntervalInfo", "input output late")
 
 worktime_spec = {
     0: (['8:30', '12:30'], ['16:00', '20:00']),
@@ -78,6 +79,14 @@ def fixed_records(query, year, month):
             if pairs[mini][1] is not None:
                 day_records.append(pairs[mini][1])
             pairs[mini][1] = rec
-        fixed.append((day, [Interval(*map(lambda x:x[1], p))\
-                            for p in grouped(pairs)]))
+        ints = []
+        for s, e in grouped(pairs):
+            if s[1]:
+                diff = time_diff(s[1], s[0])
+                if diff.total_seconds() < 0:
+                    diff = None
+            else:
+                diff = None
+            ints.append(IntervalInfo(s[1], e[1], diff))
+        fixed.append((day, ints))
     return fixed
