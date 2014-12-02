@@ -20,9 +20,9 @@
         {% for employee in employees %}
         <tr>
           <td>{{ employee.file_no|d('', True) }}</td>
-          <td>{{ employee.last_name + ', ' + employee.first_name }}</td>
-          <td>{{ employee.birth_date.isoformat() }}</td>
-          <td>{{ employee.hire_date.isoformat() }}</td>
+        <td><a href="{{ url_for('employee_view', id=employee.id) }}">{{ employee.last_name + ', ' + employee.first_name }}</a></td>
+          <td>{{ employee.birth_date.strftime('%d-%b-%Y').title() }}</td>
+          <td>{{ employee.hire_date.strftime('%d-%b-%Y').title() }}</td>
           <td>{{ employee.records.count() }}</td>
         </tr>
         {% endfor %}

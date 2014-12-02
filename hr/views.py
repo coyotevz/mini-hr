@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+from datetime import timedelta
+
 from flask import render_template, url_for, redirect
 
 from hr import app
@@ -34,7 +36,8 @@ def employee_view(id):
     records = fixed_records(employee.month_records(2014, 11), 2014, 11)
     return render_template('employee_view.html',
                            employee=employee,
-                           records=records)
+                           records=records,
+                           timedelta=timedelta)
 
 @app.route("/employee/<id>/edit")
 def employee_edit(id):

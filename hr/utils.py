@@ -84,7 +84,7 @@ def fixed_records(query, year, month):
             if s[1]:
                 diff = time_diff(s[1], s[0])
                 if diff.total_seconds() < 0:
-                    diff = None
+                    diff = timedelta(seconds=0)
             else:
                 diff = None
             ints.append(IntervalInfo(s[1], e[1], diff))

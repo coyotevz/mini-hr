@@ -26,6 +26,7 @@
       </thead>
       <tbody>
         {% set lastday = None %}
+        {% set late_list = [] %}
         {% for (day, intervals) in records %}
         {% for interval in intervals %}
         <tr>
@@ -34,19 +35,36 @@
             {{ day.strftime('%A %d').title() }}
           </th>
           {% endif %}
-          <td{% if not interval.input %} class="danger"{% endif %}>
-            {{ interval.input|d('Missing') }}
+          <td>
+            {% if not interval.input %}
+            <strong class="text-danger">Sin Registro</strong>
+            {% else %}
+            {{ interval.input }}
+            {% endif %}
           </td>
-          <td{% if not interval.output %} class="danger"{% endif %}>
-            {{ interval.output|d('Missing') }}
+          <td>
+            {% if not interval.output %}
+            <strong class="text-danger">Sin Registro</strong>
+            {% else %}
+            {{ interval.output }}
+            {% endif %}
           </td>
-          <td{% if interval.late %} class="danger"{% endif %}>
-            {{ interval.late|d('OK', true) }}
+          <td>
+            {% if interval.late is none %}
+            <span class="label label-warning">Falta registro</span>
+            {% else %}
+            <span class="label label-{% if interval.late.total_seconds() == 0 %}success{% else %}danger{% endif %}">{{ interval.late }}</span>
+            {% do late_list.append(interval.late) %}
+            {% endif %}
           </td>
         </tr>
         {% set lastday = day %}
         {% endfor %}
         {% endfor %}
+        <tr>
+          <td colspan="3"><strong>Total tiempo de retraso:</strong></td>
+          <td><strong>{{ late_list|sum(start=timedelta(seconds=0)) }}</strong></td>
+        </tr>
       </tbody>
     </table>
   </div>
