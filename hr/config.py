@@ -6,6 +6,7 @@ class Config(object):
     DEBUG = False
     TESTING = False
     SECRET_KEY = '<must be secret>' # use os.urandom(24) to generate this
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 class DevelopmentConfig(Config):
     DEBUG = True

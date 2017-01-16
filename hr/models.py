@@ -3,7 +3,7 @@
 from datetime import datetime, date
 from dateutil.relativedelta import relativedelta
 
-from flask.ext.sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
