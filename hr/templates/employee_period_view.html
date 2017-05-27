@@ -17,9 +17,11 @@
   </div>
   <div class="col-md-6">
     <div class="period-selector">
-      <a href="{{ url_for('.employee_period', id=employee.id, period='%d%02d'|format(year, month-1)) }}">Prev</a>
-      <span><b>Periodo:</b> {{ month }} / {{ year }}</span>
-      <a href="{{ url_for('.employee_period', id=employee.id, period='%d%02d'|format(year, month+1)) }}">Next</a>
+      <ul class="pager">
+        <li class="previous"><a href="{{ url_for('.employee_period', id=employee.id, period='%d%02d'|format(*prev_period(year, month))) }}"><span class="glyphicon glyphicon-chevron-left"></span> Anterior</a></li>
+        <li><b>Periodo:</b> {{ month }}/{{ year }}</li>
+        <li class="next"><a href="{{ url_for('.employee_period', id=employee.id, period='%d%02d'|format(*next_period(year, month))) }}">Próximo <span class="glyphicon glyphicon-chevron-right"></span></a></li>
+      </ul>
     </div>
     <table class="table table-condensed">
       <thead>
