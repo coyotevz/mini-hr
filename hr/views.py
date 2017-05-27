@@ -2,7 +2,7 @@
 
 from datetime import timedelta, date
 
-from flask import render_template, url_for, redirect
+from flask import render_template, url_for, redirect, request
 
 from hr import app
 from hr.models import db, Employee
@@ -30,18 +30,9 @@ def employee_add():
         return redirect(url_for('employee_list'))
     return render_template('employee_form.html', form=form)
 
-@app.route("/employee_old/<int:id>")
-def employee_view(id):
-    employee = Employee.query.get_or_404(id)
-    records = fixed_records(employee.month_records(2017, 5), 2017, 5)
-    return render_template('employee_view.html',
-                           employee=employee,
-                           records=records,
-                           timedelta=timedelta)
-
-@app.route("/employee/<int:id>/<period>")
 @app.route("/employee/<int:id>")
-def employee_period(id, period=None):
+def employee_view(id):
+    period = request.args.get('period', None)
     today = date.today()
     if period is None:
         year, month = today.year, today.month
@@ -49,7 +40,7 @@ def employee_period(id, period=None):
         year, month = int(period[:4]), int(period[4:])
     employee = Employee.query.get_or_404(id)
     records = fixed_records(employee.month_records(year, month), year, month)
-    return render_template('employee_period_view.html',
+    return render_template('employee_view.html',
                            employee=employee,
                            records=records,
                            year=year,
