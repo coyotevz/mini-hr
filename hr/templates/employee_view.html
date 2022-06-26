@@ -16,6 +16,13 @@
     </dl>
   </div>
   <div class="col-md-6">
+    <div class="period-selector">
+      <ul class="pager">
+        <li class="previous"><a href="{{ url_for('.employee_view', id=employee.id, period='%d%02d'|format(*prev_period(year, month))) }}"><span class="glyphicon glyphicon-chevron-left"></span> Anterior</a></li>
+        <li><b>Periodo:</b> {{ month }}/{{ year }}</li>
+        <li class="next"><a href="{{ url_for('.employee_view', id=employee.id, period='%d%02d'|format(*next_period(year, month))) }}">Próximo <span class="glyphicon glyphicon-chevron-right"></span></a></li>
+      </ul>
+    </div>
     <table class="table table-condensed">
       <thead>
         <tr>
@@ -69,5 +76,5 @@
 </div>
 {% endblock %}
 
-{# vim: ft=jinja:sw=2
+{# vim: ft=htmljinja:sw=2
 #}
