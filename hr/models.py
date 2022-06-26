@@ -40,6 +40,7 @@ class Employee(db.Model, TimestampMixin):
     cuil = db.Column(db.Unicode(11), nullable=False)
     user_code = db.Column(db.Integer)
     file_no = db.Column(db.Integer)
+    is_active = db.Column(db.Boolean, nullable=False, default=True)
 
     records = db.relationship(
         AttendanceRecord,

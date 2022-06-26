@@ -15,7 +15,8 @@ def index():
 
 @app.route("/employee")
 def employee_list():
-    employees = Employee.query.order_by(Employee.file_no)\
+    employees = Employee.query.filter(Employee.is_active==True)\
+                              .order_by(Employee.file_no)\
                               .order_by(Employee.hire_date)
     return render_template('employee_list.html', employees=employees)
 
@@ -28,6 +29,7 @@ def employee_add():
         db.session.add(e)
         db.session.commit()
         return redirect(url_for('employee_list'))
+    print(form.errors)
     return render_template('employee_form.html', form=form)
 
 @app.route("/employee/<int:id>")

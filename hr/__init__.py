@@ -13,9 +13,10 @@ app.config.from_object('hr.config.DevelopmentConfig')
 db.init_app(app)
 
 # Jinja extensions
-app.jinja_options['extensions'].extend([
-    'jinja2.ext.do',
-])
+#app.jinja_options['extensions'].extend([
+#    'jinja2.ext.do',
+#])
+app.jinja_env.add_extension('jinja2.ext.do')
 
 @app.context_processor
 def static_processor():

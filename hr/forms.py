@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
-from flask_wtf import Form
+from flask_wtf import FlaskForm
 from wtforms import StringField, IntegerField, DateField
 from wtforms.validators import DataRequired, Optional
 
-class EmployeeForm(Form):
+class EmployeeForm(FlaskForm):
     first_name = StringField(u'Nombre', validators=[DataRequired()])
     last_name = StringField(u'Apellido', validators=[DataRequired()])
     birth_date = DateField(u'Fecha Nacimiento', validators=[DataRequired()])
