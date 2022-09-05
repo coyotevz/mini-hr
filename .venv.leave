@@ -1,2 +1,4 @@
 unset FLASK_APP
 unset FLASK_ENV
+unset FLASK_RUN_HOST
+unset FLASK_RUN_PORT
