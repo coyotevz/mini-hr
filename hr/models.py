@@ -23,6 +23,8 @@ class AttendanceRecord(db.Model):
     datetime = db.Column(db.DateTime, nullable=False, unique=True)
     bkp_type = db.Column(db.Integer, nullable=False)
     type_code = db.Column(db.Integer, nullable=False)
+    received = db.Column(db.DateTime)
+    device = db.Column(db.String)
 
     def __repr__(self):
         return "<Record({}, {} {})>".format(self.user_code,
@@ -40,7 +42,7 @@ class Employee(db.Model, TimestampMixin):
     cuil = db.Column(db.Unicode(11), nullable=False)
     user_code = db.Column(db.Integer)
     file_no = db.Column(db.Integer)
-    is_active = db.Column(db.Boolean, nullable=False, default=True)
+    active = db.Column(db.Boolean, nullable=False, default=True)
 
     records = db.relationship(
         AttendanceRecord,
