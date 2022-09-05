@@ -15,7 +15,7 @@ def index():
 
 @app.route("/employee")
 def employee_list():
-    employees = Employee.query.filter(Employee.is_active==True)\
+    employees = Employee.query.filter(Employee.active==True)\
                               .order_by(Employee.file_no)\
                               .order_by(Employee.hire_date)
     return render_template('employee_list.html', employees=employees)
